@@ -105,6 +105,7 @@ public class InterfazSire extends javax.swing.JFrame {
 
         setIconImage(getIconImage());
         setTitle("SISTEMA SIRE");
+        System.out.println("entrando....");
         this.documentos = beansActions.getDocumentos();
         this.setLocationRelativeTo(this);
     }
