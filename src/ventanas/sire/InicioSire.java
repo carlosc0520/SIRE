@@ -126,7 +126,7 @@ public class InicioSire extends javax.swing.JFrame {
 
         JLDerechosRes.setFont(new java.awt.Font("Segoe UI", 2, 8)); // NOI18N
         JLDerechosRes.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        JLDerechosRes.setText("©2023 C&C Contadores Asociados S.R.L. Todos los derechos reservados");
+        JLDerechosRes.setText("©2023 BUSINESS MANAGEMENT SYSTEM Todos los derechos reservados");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);

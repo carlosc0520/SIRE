@@ -164,7 +164,7 @@
           <Font name="Segoe UI" size="8" style="2"/>
         </Property>
         <Property name="horizontalAlignment" type="int" value="0"/>
-        <Property name="text" type="java.lang.String" value="&#xa9;2023 C&amp;C Contadores Asociados S.R.L. Todos los derechos reservados"/>
+        <Property name="text" type="java.lang.String" value="&#xa9;2023 BUSINESS MANAGEMENT SYSTEM Todos los derechos reservados"/>
       </Properties>
     </Component>
   </SubComponents>

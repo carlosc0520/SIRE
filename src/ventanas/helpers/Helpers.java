@@ -80,6 +80,19 @@ public class Helpers {
         JButtonName.setIcon(icon);
     }
 
+    public String obtenerTextoDespuesDeGuion(String input) {
+        if (input == null || input.isEmpty()) {
+            return "";  
+        }
+
+        int indexGuion = input.lastIndexOf('-');
+        if (indexGuion != -1) {
+            return input.substring(indexGuion + 1);
+        } else {
+            return input;
+        }
+    }
+
     public void hidePanelsInContainer(Container container) {
         Component[] components = container.getComponents();
         for (Component component : components) {

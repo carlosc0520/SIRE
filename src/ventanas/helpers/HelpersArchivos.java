@@ -1,12 +1,9 @@
 package ventanas.helpers;
 
 import clases.CabecerasRender;
-import clases.ColumnasSire;
 import java.awt.Desktop;
-import java.awt.Dialog;
 import java.awt.FileDialog;
 import java.awt.Frame;
-import java.awt.Image;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -336,26 +333,35 @@ public class HelpersArchivos {
     }
 
     public static void exportTableToZipExport(JTable table, String separator, String nombre, int range, int rangeMin, JDialog progressDialog, boolean abrirDocumento) {
-        SwingWorker<String, Void> worker = new SwingWorker<>() {
+        SwingWorker<Void, Void> worker = new SwingWorker<>() {
             @Override
-            protected String doInBackground() throws Exception {
-                FileDialog fileDialog = new FileDialog((Frame) null, "Save Zip File", FileDialog.SAVE);
-                fileDialog.setFile(nombre + ".zip");
-                fileDialog.setVisible(true);
+            protected Void doInBackground() {
+                FileOutputStream fileOutputStream = null;
+                ZipOutputStream zipOutputStream = null;
+                BufferedWriter writer = null;
+                String zipFilePath = null;
 
-                String selectedFile = fileDialog.getFile();
-                String selectedDirectory = fileDialog.getDirectory();
+                try {
+                    // Mostrar un cuadro de diálogo para guardar el archivo ZIP
+                    FileDialog fileDialog = new FileDialog((Frame) null, "Save Zip File", FileDialog.SAVE);
+                    fileDialog.setFile(nombre + ".zip");
+                    fileDialog.setVisible(true);
 
-                if (selectedFile != null && selectedDirectory != null) {
-                    String zipFileName = selectedDirectory + selectedFile;
+                    String selectedFile = fileDialog.getFile();
+                    String selectedDirectory = fileDialog.getDirectory();
 
-                    try (ZipOutputStream zipOutputStream = new ZipOutputStream(new FileOutputStream(zipFileName))) {
+                    if (selectedFile != null && selectedDirectory != null) {
+                        zipFilePath = selectedDirectory + selectedFile;
+
+                        fileOutputStream = new FileOutputStream(zipFilePath);
+                        zipOutputStream = new ZipOutputStream(fileOutputStream);
+                        zipOutputStream.putNextEntry(new ZipEntry(nombre + ".txt"));
+
+                        writer = new BufferedWriter(new OutputStreamWriter(zipOutputStream));
                         TableModel model = table.getModel();
                         int rowCount = model.getRowCount();
 
-                        zipOutputStream.putNextEntry(new ZipEntry(nombre + ".txt"));
-
-                        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(zipOutputStream));
+                        // Escribir el contenido de la tabla en el archivo de texto
                         for (int rowIndex = 0; rowIndex < rowCount; rowIndex++) {
                             for (int columnIndex = rangeMin; columnIndex < range; columnIndex++) {
                                 Object value = model.getValueAt(rowIndex, columnIndex);
@@ -366,40 +372,48 @@ public class HelpersArchivos {
                                     writer.write(separator);
                                 }
                             }
+
+                            writer.write(separator);
                             writer.newLine();
-                        }
-
-                        writer.close();
-                        zipOutputStream.closeEntry();
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                return selectedFile;
-            }
-
-            @Override
-            protected void done() {
-                progressDialog.dispose();
-                String savedFilePath;
-                try {
-                    savedFilePath = get();
-                    if (savedFilePath != null) {
-                        JOptionPane.showMessageDialog(null, "Archivo ZIP guardado correctamente en: " + savedFilePath, "Éxito", JOptionPane.INFORMATION_MESSAGE);
-
-                        if (abrirDocumento) {
-                            if (Desktop.isDesktopSupported()) {
-                                Desktop desktop = Desktop.getDesktop();
-                                File fileToOpen = new File(savedFilePath);
-                                desktop.open(fileToOpen);
-                            }
                         }
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
+                    JOptionPane.showMessageDialog(null, "Error al guardar el archivo ZIP: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                } finally {
+                    try {
+                        if (writer != null) {
+                            writer.close();
+                        }
+                        if (zipOutputStream != null) {
+                            zipOutputStream.close();
+                        }
+                        if (fileOutputStream != null) {
+                            fileOutputStream.close();
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } finally {
+                        progressDialog.dispose();
+                    }
                 }
+
+                if (zipFilePath != null) {
+                    JOptionPane.showMessageDialog(null, "Archivo ZIP guardado correctamente en: " + zipFilePath, "Éxito", JOptionPane.INFORMATION_MESSAGE);
+
+                    // Abrir el archivo ZIP si está habilitado
+                    if (abrirDocumento && Desktop.isDesktopSupported()) {
+                        try {
+                            Desktop desktop = Desktop.getDesktop();
+                            File fileToOpen = new File(zipFilePath);
+                            desktop.open(fileToOpen);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+
+                return null;
             }
         };
 

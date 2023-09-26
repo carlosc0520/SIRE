@@ -105,7 +105,6 @@ public class InterfazSire extends javax.swing.JFrame {
 
         setIconImage(getIconImage());
         setTitle("SISTEMA SIRE");
-        System.out.println("entrando....");
         this.documentos = beansActions.getDocumentos();
         this.setLocationRelativeTo(this);
     }
@@ -1119,7 +1118,8 @@ public class InterfazSire extends javax.swing.JFrame {
                                                     : "";
                                             break;
                                         default:
-                                            cadenaModificada[j] = cadenaLinea[columnaSire.getCODPLE() - 1];
+                                            cadenaModificada[j] = (columnaSire.getContenedor(cadenaLinea[columnaSire.getCODPLE() - 1], columnaSire.getNADMTDS()))
+                                                    ? columnaSire.getCLMNDFLTVLR1() : cadenaLinea[columnaSire.getCODPLE() - 1];
                                             break;
                                     }
 
@@ -1427,13 +1427,17 @@ public class InterfazSire extends javax.swing.JFrame {
                                         case 1:
                                             cadenaModificada[j] = helpers.obtenerSubCadena(cadenaLinea[columnaSire.getCODPLE() - 1], 0, 6);
                                             break;
+                                        case 6:
+                                            cadenaModificada[j] = helpers.obtenerTextoDespuesDeGuion(cadenaLinea[columnaSire.getCODPLE() - 1]);
+                                            break;
                                         case 16:
                                             cadenaModificada[j] = columnaSire.getContenedor(cadenaLinea[columnaSire.getCDVLDCN() - 1], columnaSire.getVVLDCNS())
                                                     ? columnaSire.getCLMNDFLTVLR1()
                                                     : cadenaLinea[columnaSire.getCODPLE() - 1];
                                             break;
                                         default:
-                                            cadenaModificada[j] = cadenaLinea[columnaSire.getCODPLE() - 1];
+                                            cadenaModificada[j] = (columnaSire.getContenedor(cadenaLinea[columnaSire.getCODPLE() - 1], columnaSire.getNADMTDS()))
+                                                    ? columnaSire.getCLMNDFLTVLR1() : cadenaLinea[columnaSire.getCODPLE() - 1];
                                             break;
                                     }
                                 } else {
@@ -1843,7 +1847,8 @@ public class InterfazSire extends javax.swing.JFrame {
                                             cadenaModificada[j] = SIRE.obtenerEstadoPorCodigo(codigoNum);
                                             break;
                                         default:
-                                            cadenaModificada[j] = cadenaLinea[columnaSire.getCODPLE() - 1];
+                                            cadenaModificada[j] = (columnaSire.getContenedor(cadenaLinea[columnaSire.getCODPLE() - 1], columnaSire.getNADMTDS()))
+                                                    ? columnaSire.getCLMNDFLTVLR1() : cadenaLinea[columnaSire.getCODPLE() - 1];
                                             break;
                                     }
                                 } else {
@@ -2106,12 +2111,12 @@ public class InterfazSire extends javax.swing.JFrame {
                         if (!isactualizado) {
                             isactualizado = true;
                         }
-                        
+
                     } catch (InterruptedException | ExecutionException e) {
                         // Manejar cualquier excepción que ocurra durante la ejecución en segundo plano
                         helpers.mensajeError("Ocurrió un error al actualizar.", 2);
                     }
-                    
+
                     JDLoading.dispose();
                 }
             };
