@@ -82,7 +82,7 @@ public class Helpers {
 
     public String obtenerTextoDespuesDeGuion(String input) {
         if (input == null || input.isEmpty()) {
-            return "";  
+            return "";
         }
 
         int indexGuion = input.lastIndexOf('-');
@@ -187,9 +187,12 @@ public class Helpers {
                 try {
                     String detectedCharset = detectCharset(selectArchivo);
 
-                    if (!StandardCharsets.UTF_8.name().equals(detectedCharset)) {
+                    if (detectedCharset == null) {
+                        convertirAUTF8(selectArchivo);
+                    } else if (!detectedCharset.equalsIgnoreCase("UTF-8")) {
                         convertirAUTF8(selectArchivo);
                     }
+
 
                     fileInputStream = new FileInputStream(new File(selectArchivo.getAbsolutePath()));
 

@@ -24,6 +24,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -1032,7 +1033,7 @@ public class InterfazSire extends javax.swing.JFrame {
         SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
             @Override
             protected Void doInBackground() throws Exception {
-                try (BufferedReader archivo = new BufferedReader(new InputStreamReader(selectFile))) {
+                try (BufferedReader archivo = new BufferedReader(new InputStreamReader(selectFile, Charset.forName("UTF-8")))) {
                     String linea;
 
                     if (JRPleCompras.isSelected()) {
@@ -1156,7 +1157,8 @@ public class InterfazSire extends javax.swing.JFrame {
 
         worker.execute();
 
-        JDLoading.setVisible(true);
+        JDLoading.setVisible(
+                true);
     }//GEN-LAST:event_JBVerCompraActionPerformed
 
     private void JMIComprasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JMIComprasActionPerformed
@@ -1174,6 +1176,7 @@ public class InterfazSire extends javax.swing.JFrame {
         JPRegistroDomiciliados.setVisible(true);
         helpers.LimpiarTable(JTDomiciliados, BGDomiciliados, JCDomiciliadosFormato, JBUpdateArchivDomc);
         selectFile = null;
+        JBVerDomiciliados.setEnabled(true);
         this.PLE = updateRenderCabeceras(3);
         this.SIRE = updateRenderCabeceras(6);
     }//GEN-LAST:event_JMIDomiciliadasActionPerformed
@@ -1388,7 +1391,7 @@ public class InterfazSire extends javax.swing.JFrame {
         SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
             @Override
             protected Void doInBackground() throws Exception {
-                try (BufferedReader archivo = new BufferedReader(new InputStreamReader(selectFile))) {
+                try (BufferedReader archivo = new BufferedReader(new InputStreamReader(selectFile, Charset.forName("UTF-8")))) {
                     String linea;
 
                     if (JRPleDocimiciliados.isSelected()) {
@@ -1776,7 +1779,7 @@ public class InterfazSire extends javax.swing.JFrame {
         SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
             @Override
             protected Void doInBackground() throws Exception {
-                try (BufferedReader archivo = new BufferedReader(new InputStreamReader(selectFile))) {
+                try (BufferedReader archivo = new BufferedReader(new InputStreamReader(selectFile, Charset.forName("UTF-8")))) {
                     String linea;
 
                     if (JRPleVentas.isSelected()) {
@@ -1823,6 +1826,9 @@ public class InterfazSire extends javax.swing.JFrame {
                                             } else {
                                                 cadenaModificada[j] = columnaSire.getContenedor(cadenaLinea[columnaSire.getCODPLE() - 1], columnaSire.getNADMTDS()) ? columnaSire.getCLMNDFLTVLR1() : cadenaLinea[columnaSire.getCODPLE() - 1];
                                             }
+                                            break;
+                                        case 9:
+                                            cadenaModificada[j] = helpers.procesarComprobante(cadenaLinea[columnaSire.getCODPLE() - 1], true, 0);
                                             break;
                                         case 28:
                                             cadenaModificada[j] = columnaSire.getContenedor(cadenaLinea[columnaSire.getCDVLDCN() - 1], columnaSire.getVVLDCNS())
@@ -1883,7 +1889,8 @@ public class InterfazSire extends javax.swing.JFrame {
 
         worker.execute();
 
-        JDLoading.setVisible(true);
+        JDLoading.setVisible(
+                true);
     }//GEN-LAST:event_JBVerVentaActionPerformed
 
     private void JBUpdateArchivVentasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBUpdateArchivVentasActionPerformed
