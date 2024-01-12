@@ -69,9 +69,9 @@ public class InterfazSire extends javax.swing.JFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         this.empresa = empresa;
-        if (empresa.getLGOEMPRSA().equals("1")) {
-            JXMENUITEM4.setVisible(false);
-        }
+        //if (empresa.getLGOEMPRSA().equals("1")) {
+          //  JXMENUITEM4.setVisible(false);
+        //}
         // BLOQUEAR FIELDS DE INICIO 
         JFRucEmpresa.setEditable(false);
         JFRazonSocialEmp.setEditable(false);
