@@ -59,6 +59,7 @@ public class Helpers {
     }
 
     public static boolean esFechaValida(String fechaString) {
+        if(fechaString.equals("")) return false;
         try {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             LocalDate fecha = LocalDate.parse(fechaString, formatter);
